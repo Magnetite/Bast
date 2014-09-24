@@ -49,7 +49,6 @@ echo %s%
 
 ::===============================
 :numlen
-::Gets the length of the number
 @set /a numlen = 1
 @set /a p = %1
 :n
@@ -60,28 +59,42 @@ echo %s%
 @goto:n
 :nn
 @echo %numlen%
-@GOTO:EOF
+@GOTO:EOF 
 
 ::===================================
 
 :While
-::A very limited while loop, that only increments
 @set index=1
 :c
-@if %index% gtr %1 goto:EOF
-   @echo Iteration number %index%
+@if %While% gtr %1 goto:EOF 
+   @echo Iteration number %While%
    @set /A index+=1
    @goto c
 ::================================
 
 :pow
-::Raises a number to a power. call:pow 2 7 will raise 2 to the 7th power.
 @set /a s=1
 @set /a n= %2
 @for /l %%x in (1, 1, %n%) do @SET /A s*= %1
 @echo %s%
-@GOTO:EOF
+set /a pow = %s%
+@GOTO:EOF 
+::=================================
 
+:numRev
+set /a g = %1
+set /a numRev = 0
+:nr
+call:numlen %g%
+set /a numlen -= 1
+call:pow 10 %numlen%
+set /a h = %g% %% 10
+set /a numRev += h * %pow%
+set /a g /= 10
+if %g% gtr 0 goto:nr
+GOTO:EOF
+::===============================
 
 
 :A
+ 
