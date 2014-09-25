@@ -1,3 +1,4 @@
+setlocal EnableDelayedExpansion
 @GOTO:A 
  
 @echo off
@@ -20,8 +21,8 @@
 ::Functionality added below
 
 :num
-
-@set /a num%1 = %2
+@set /a t = %1
+@set /a num[!t!] = %2
 @GOTO:EOF
 
 ::=========================
@@ -77,22 +78,22 @@ echo %s%
 @set /a n= %2
 @for /l %%x in (1, 1, %n%) do @SET /A s*= %1
 @echo %s%
-set /a pow = %s%
+@set /a pow = %s%
 @GOTO:EOF 
 ::=================================
 
 :numRev
-set /a g = %1
-set /a numRev = 0
+@set /a g = %1
+@set /a numRev = 0
 :nr
-call:numlen %g%
-set /a numlen -= 1
-call:pow 10 %numlen%
-set /a h = %g% %% 10
-set /a numRev += h * %pow%
-set /a g /= 10
-if %g% gtr 0 goto:nr
-GOTO:EOF
+@call:numlen %g%
+@set /a numlen -= 1
+@call:pow 10 %numlen%
+@set /a h = %g% %% 10
+@set /a numRev += h * %pow%
+@set /a g /= 10
+@if %g% gtr 0 goto:nr
+@GOTO:EOF
 ::===============================
 
 
