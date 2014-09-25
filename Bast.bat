@@ -4,7 +4,7 @@ setlocal EnableDelayedExpansion
 @echo off
 :: BAST Programming Language Core
 
-::BAST Appending version
+:: BAST Appending version
 
 :: BAST "Compiler" below
 
@@ -18,13 +18,30 @@ setlocal EnableDelayedExpansion
 @pause > nul
 @exit /B
 
+::pre- Variables set:
+@set /a xfx = 0
+
 ::Functionality added below
 
-:num
+:num1
 @set /a t = %1
 @set /a num[!t!] = %2
 @GOTO:EOF
 
+::=========================
+:num2
+@set /a t = %1
+@set /a y = %2
+@set /a num[!t!][!y!] = %3
+@GOTO:EOF
+::========================
+
+:num3
+@set /a t = %1
+@set /a y = %2
+@set /a u = %3
+@set /a num[!t!][!y!][!u!] = %4
+@GOTO:EOF
 ::=========================
 
 :test
@@ -63,39 +80,49 @@ echo %s%
 @GOTO:EOF 
 
 ::===================================
-
-:While
-@set index=1
+:dfloat
+@set /a f1 = %1 / %2
+@set /a r = %1 %% %2
+@set /a r *= 1000000
+@set /a f2 = %r% / %2% 
+@goto:eof
+::===================================
+:while
+@set while = %1
 :c
-@if %While% gtr %1 goto:EOF 
-   @echo Iteration number %While%
-   @set /A index+=1
-   @goto c
+@if %while% gtr %2 goto:EOF 
+@echo Iteration number %while%
+@set /A while+=%1
+@goto c
 ::================================
 
 :pow
 @set /a s=1
 @set /a n= %2
 @for /l %%x in (1, 1, %n%) do @SET /A s*= %1
-@echo %s%
 @set /a pow = %s%
 @GOTO:EOF 
 ::=================================
 
 :numRev
-@set /a g = %1
-@set /a numRev = 0
+set /a g = %1
+set /a numRev = 0
 :nr
-@call:numlen %g%
-@set /a numlen -= 1
-@call:pow 10 %numlen%
-@set /a h = %g% %% 10
-@set /a numRev += h * %pow%
-@set /a g /= 10
-@if %g% gtr 0 goto:nr
-@GOTO:EOF
+call:numlen %g%
+set /a numlen -= 1
+call:pow 10 %numlen%
+set /a h = %g% %% 10
+set /a numRev += h * %pow%
+set /a g /= 10
+if %g% gtr 0 goto:nr
+GOTO:EOF
 ::===============================
 
+:ColorText
+echo off
+<nul set /p ".=%DEL%" > "%~2"
+findstr /v /a:%1 /R "^$" "%~2" nul
+del "%~2" > nul 2>&1
+goto :eof
 
 :A
- 
