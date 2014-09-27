@@ -23,6 +23,14 @@ setlocal EnableDelayedExpansion
 
 ::Functionality added below
 
+:var
+@set /a %1 = %2
+@set /a %3 = %4
+@set /a %5 = %6
+@set /a %7 = %8
+@goto:eof
+::=========================
+
 :num1
 @set /a t = %1
 @set /a num[!t!] = %2
@@ -30,18 +38,36 @@ setlocal EnableDelayedExpansion
 
 ::=========================
 :num2
-@set /a t = %1
-@set /a y = %2
+@call:var t %1 y %2
 @set /a num[!t!][!y!] = %3
 @GOTO:EOF
 ::========================
 
 :num3
-@set /a t = %1
-@set /a y = %2
-@set /a u = %3
+call:var t %1 y %2 u %3
 @set /a num[!t!][!y!][!u!] = %4
 @GOTO:EOF
+::=========================
+:s
+@set /a %1 = %2
+@echo !%1!
+@goto:eof
+
+::=========================
+:and
+@if %1 equ %2 (
+		@if %3 equ %4 (
+		@call:%5 %6 %7 %8 %9
+		)
+)
+@goto:eof
+::=========================
+:or
+@if %1 equ %2 (@call:%5 %6 %7 %8 %9)
+@if %3 equ %4 (@call:%5 %6 %7 %8 %9)
+
+@goto:eof
+
 ::=========================
 
 :test
@@ -105,17 +131,17 @@ echo %s%
 ::=================================
 
 :numRev
-set /a g = %1
-set /a numRev = 0
+@set /a g = %1
+@set /a numRev = 0
 :nr
-call:numlen %g%
-set /a numlen -= 1
-call:pow 10 %numlen%
-set /a h = %g% %% 10
-set /a numRev += h * %pow%
-set /a g /= 10
-if %g% gtr 0 goto:nr
-GOTO:EOF
+@call:numlen %g%
+@set /a numlen -= 1
+@call:pow 10 %numlen%
+@set /a h = %g% %% 10
+@set /a numRev += h * %pow%
+@set /a g /= 10
+@if %g% gtr 0 goto:nr
+@GOTO:EOF
 ::===============================
 
 :ColorText
