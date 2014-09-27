@@ -23,6 +23,8 @@ setlocal EnableDelayedExpansion
 
 ::Functionality added below
 
+
+::Variable Functions
 :var
 @set /a %1 = %2
 @set /a %3 = %4
@@ -44,7 +46,7 @@ setlocal EnableDelayedExpansion
 ::========================
 
 :num3
-call:var t %1 y %2 u %3
+@call:var t %1 y %2 u %3
 @set /a num[!t!][!y!][!u!] = %4
 @GOTO:EOF
 ::=========================
@@ -53,6 +55,16 @@ call:var t %1 y %2 u %3
 @echo !%1!
 @goto:eof
 
+
+
+
+::=========================
+:call
+@call:%1 %2 %3 %4 %5 %6 %7 %8 %9
+@goto:eof
+
+
+::Logic Functions
 ::=========================
 :and
 @if %1 equ %2 (
@@ -62,24 +74,38 @@ call:var t %1 y %2 u %3
 )
 @goto:eof
 ::=========================
+:nand
+@if %1 neq %2 (
+		@if %3 neq %4 (
+		@call:%5 %6 %7 %8 %9
+		)
+)
+@goto:eof
+::==========================
 :or
 @if %1 equ %2 (@call:%5 %6 %7 %8 %9)
 @if %3 equ %4 (@call:%5 %6 %7 %8 %9)
 
 @goto:eof
+::==========================
+:nor
+@if %1 neq %2 (@call:%5 %6 %7 %8 %9)
+@if %3 neq %4 (@call:%5 %6 %7 %8 %9)
 
-::=========================
-
-:test
-::Broken code
-set w=0
-for %%K in (f g h i k l m o q) do (
-  set /a w+=1
-  set /a a!w!=!%%K!%%13
+@goto:eof
+::==========================
+:xor
+@if %1 neq %2 (
+		@if %3 equ %4 (
+		@call:%5 %6 %7 %8 %9
+		)
 )
-:: as a test
-echo !a5!
-GOTO:EOF
+@if %1 equ %2 (
+		@if %3 neq %4 (
+		@call:%5 %6 %7 %8 %9
+		)
+)
+@goto:eof
 
 ::=========================
 
@@ -91,6 +117,8 @@ for %%c in (%1) do set /a s+=1
 echo %s%
 @GOTO:EOF
 
+
+::Numerical Functions
 ::===============================
 :numlen
 @set /a numlen = 1
@@ -111,14 +139,15 @@ echo %s%
 @set /a r = %1 %% %2
 @set /a r *= 1000000
 @set /a f2 = %r% / %2% 
+
 @goto:eof
 ::===================================
 :while
-@set while = %1
+@set /a while = 0
 :c
 @if %while% gtr %2 goto:EOF 
 @echo Iteration number %while%
-@set /A while+=%1
+@set /a while+=%1
 @goto c
 ::================================
 
@@ -143,6 +172,5 @@ echo %s%
 @if %g% gtr 0 goto:nr
 @GOTO:EOF
 ::===============================
-
 
 :A
