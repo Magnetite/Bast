@@ -134,12 +134,19 @@ echo %s%
 @GOTO:EOF 
 
 ::===================================
-:dfloat
+:divfloat
 @set /a f1 = %1 / %2
 @set /a r = %1 %% %2
 @set /a r *= 1000000
 @set /a f2 = %r% / %2% 
 
+@goto:eof
+::===================================
+:addfloat
+@set /a f1 = %1 + %3
+@set /a f2 = %2 + %4
+@if f2 gtr 999999 set /a f1 += 1
+@set /a f2 = f2 %% 1000000
 @goto:eof
 ::===================================
 :while
