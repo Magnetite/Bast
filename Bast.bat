@@ -18,9 +18,6 @@ setlocal EnableDelayedExpansion
 @pause > nul
 @exit /B
 
-::pre- Variables set:
-@set /a xfx = 0
-
 ::Functionality added below
 
 
@@ -188,3 +185,7 @@ echo %s%
 ::===============================
 
 :A
+::pre- Variables set:
+@set /a xfx = 0
+
+::====================
