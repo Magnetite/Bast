@@ -183,9 +183,22 @@ echo %s%
 @if %g% gtr 0 goto:nr
 @GOTO:EOF
 ::===============================
+:triangular_number_gen
+@set /a a = %1 + 1
+@set /a tri = %1 * a
+@set /a tri /= 2
+@goto:eof
+::===============================
+:hex_number_gen
+@set /a -= %1 - 1
+@call:triangular_number_gen %1
+@set /a hex = %tri% * 6
+@set /a hex += 1
+@goto:eof
 
 :A
 ::pre- Variables set:
 @set /a xfx = 0
 
-::====================
+
+::===============================
